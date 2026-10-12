@@ -204,6 +204,17 @@ def render():
         for e, fm, tst in rows or []:
             t.append(f"| {r} | {e['id'].split('-')[1][1:]} | {e['id']} {e['title']} | {', '.join(fm.get('interfaces_defined', [])) or '—'} | {', '.join(x.replace('TST-'+e['id']+'-','#') for x in tst[:6])}{' …' if len(tst)>6 else ''} | {e['status']} |")
     (DOCS / "REQUIREMENTS-TRACEABILITY.md").write_text("\n".join(t) + "\n", encoding="utf-8")
+
+    # component catalog
+    cc = DOCS / "04-ARCHITECTURE" / "COMPONENT-CATALOG.md"
+    rows = ["| Module id | Element | Package | Responsibility (element title) | Depends on | Spec | Status |", "|---|---|---|---|---|---|---|"]
+    for e in elements:
+        if e["kind"] != "module":
+            continue
+        mod = "MOD-" + e["pkg"].upper() + "-" + e["slug"].upper().replace("-", "_")
+        rows.append(f"| {mod} | {e['id']} | {e['pkg']} | {e['title']} | {', '.join(d.replace('RG-','') for d in e['deps'])} | `06-MODULES/{e['id']}-{e['slug']}.md` | {e['status']} |")
+    if cc.exists():
+        cc.write_text(replace_block(cc.read_text(encoding="utf-8"), "CATALOG", "\n".join(rows)), encoding="utf-8")
     print("rendered")
 
 
