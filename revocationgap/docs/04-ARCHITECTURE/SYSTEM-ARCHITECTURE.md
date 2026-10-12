@@ -45,7 +45,7 @@ External actors: operator (human or CI), identity providers (admin and protocol 
 | 1–2 Domain | `rg_core` (`revocationgap-core`) | Time, temporal state model, events, expectations, observations, experiment state machine, analysis (alignment, correlation, exposure window, confidence, classification), scenario DSL, report data contracts, **ports** (Protocols) | pydantic only |
 
 **Dependency rule (enforced by import-linter in CI):** imports point downward/inward only.
-`rg_core` → nothing in RG. `rg_idp`, `rg_probe` → `rg_core`. `rg_stbridge` → `rg_core`, `rg_probe`, `schemathesis`. `rg_lab` → `rg_core` (and may import `rg_idp`/`rg_probe` *protocol modules* for conformance helpers) and never `rg_stbridge`. `revocationgap` (app) → all. **No package other than `rg_stbridge` may import `schemathesis`, `hypothesis` or `pytest`** (the app imports `rg_stbridge` lazily, only when a Schemathesis-backed probe source is configured). `rg_core` performs no I/O: no sockets, no files, no subprocesses, no wall-clock reads (ADR-0006).
+`rg_core` → nothing in RG. `rg_idp`, `rg_probe` → `rg_core`. `rg_stbridge` → `rg_core`, `rg_probe`, `schemathesis`. `rg_lab` → `rg_core` (and may import `rg_idp`/`rg_probe` *protocol modules* for conformance helpers) and never `rg_stbridge`. `revocationgap` (app) → all. **No package other than `rg_stbridge` may import `schemathesis`, `hypothesis` or `pytest`** (the app imports `rg_stbridge` lazily, only when a Schemathesis-backed probe source is configured). `rg_core` performs no I/O: no sockets, no files, no subprocesses, no wall-clock reads (ADR-0006). Thread pools, signal handlers and logging hooks *installed by the composition root* are permitted inside `rg_core` (`rg_core.aio`, `rg_core.logging` define them; they perform no I/O themselves) — CCR-I. Config-section primitives live in `rg_core.model.config` (CCR-A).
 
 ```mermaid
 flowchart TB
@@ -92,7 +92,7 @@ All cross-package behaviour is expressed as `typing.Protocol` classes in `rg_cor
 ## 5. Runtime model
 
 * **One process, one asyncio event loop per experiment run**, owned by the `ExperimentEngine`. Structured concurrency: a run's tasks live in a single `asyncio.TaskGroup`; cancellation is cooperative and propagates from the run scope (RG-P03-005).
-* **Blocking work is offloaded** to three bounded executors — `probe` (ST/requests probes), `idp` (Authlib/requests admin and protocol calls), `store` (SQLite writes) — so a slow target cannot delay scheduling or persistence (ADR-0004). WebSocket sessions, the optional CAEP receiver (HTTP server) and the GUI server run natively on the loop.
+* **Blocking work is offloaded** to four bounded executors — `probe` (ST/requests probes), `idp` (Authlib/requests admin and protocol calls), `store` (SQLite; single thread owns the connection) and `fs` (config/report/file I/O; CCR-H) — so a slow target cannot delay scheduling or persistence (ADR-0004). WebSocket sessions, the optional CAEP receiver (HTTP server) and the GUI server run natively on the loop.
 * **Timing discipline:** probe send times are scheduled on the monotonic clock via the `Scheduler`; the worker thread stamps `t_send_start`/`t_recv_end` immediately around the blocking call and the scheduler records *scheduling lateness* (`actual − intended` dispatch) on every observation (feeds uncertainty, RG-P02-006).
 * **Backpressure:** all queues are bounded (event bus subscribers, probe submission, store writer); overflow policies are explicit per queue (`block`, `drop_oldest_noncritical`, `fail`) and *evidence-bearing* queues are never lossy (store writer blocks; probes slow down and the lateness is recorded).
 * **Determinism:** with `VirtualClock`+`VirtualScheduler` and in-process transports, a full experiment executes without wall-time waiting and with a fixed event order (ties broken by `(due_mono_ns, submission_seq)`).
@@ -172,7 +172,7 @@ Entry-point groups (ADR-0009) with `api_version` compatibility and capability ma
 | Secrets | Handles + resolver; memory-only material; `Secret` wrapper never reprs values | RG-P11-001 |
 | Time | Only via `Clock`; lint rule RG-LINT-001 bans `time.time`, `time.monotonic`, `datetime.now`, `asyncio.sleep` in `rg_core`, `rg_probe`, `rg_idp`, `rg_stbridge`, engine | RG-P02-001, RG-P12-001 |
 | Versioning | Documents carry `schema_version`; migrations forward-only with backup | RG-P03-002, RG-P11-006 |
-| Observability | Metrics are events on the bus (`probe_latency`, `scheduling_lateness`, `queue_depth`) rendered in GUI and exported in run summary | RG-P03-007 |
+| Observability | Metrics are events on the bus (`probe.latency`, `scheduler.lateness`, `queue.depth`; bus kind `metric.<name>`) rendered in GUI and exported in run summary | RG-P03-007 |
 
 ## 10. Deployment model (cross-platform; RG-P03-011)
 

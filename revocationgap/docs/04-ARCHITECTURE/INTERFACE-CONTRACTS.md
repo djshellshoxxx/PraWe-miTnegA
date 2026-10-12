@@ -12,10 +12,12 @@
 | IF-CORE-SERIAL | `SchemaRegistry`, `IdFactory`, canonical JSON | `rg_core.serial` | RG-P03-002 | rg_core | — |
 | IF-CORE-LOG | `Redactor`, structured logger | `rg_core.logging` | RG-P03-004 | rg_core | recording |
 | IF-CORE-ERR | `RgError` hierarchy | `rg_core.errors` | RG-P03-005 | rg_core | — |
+| IF-CORE-AIO | `RunScope`, `Deadline`, `ExecutorSet`/`run_blocking`, `BoundedQueue`, `AbortController`, `shield_commit`, `run_cleanup` | `rg_core.aio` | RG-P03-005 | rg_core | virtual-time variants |
 | IF-CORE-STORE | `ExperimentStore`, `EvidenceStore`, `AuditLog` | `rg_core.ports.store` | RG-P03-008 | SQLite/blob (app) | in-memory |
 | IF-CORE-SECRETS | `SecretResolver` | `rg_core.ports.secrets` | RG-P11-001 | env/keyring/file (app) | in-memory |
 | IF-CORE-PLUGIN | `PluginRegistry`, `PluginManifest` | `rg_core.ports.plugins` | RG-P03-009 | app loader | static registry |
 | IF-CFG-LOADER | config loading/validation | `revocationgap.config` | RG-P03-003 | app | — |
+| IF-CFG-REGISTRY | `ConfigSectionRegistry` (sections register validated sub-models); the section *primitives* (`ConfigSection`, `FieldMeta`/`meta()`, `ReloadClass`, `Duration`, `ByteSize`) live in `rg_core.model.config` (owned by RG-P03-002) so that every package can declare a section without importing the app | registry: `revocationgap.config`; primitives: `rg_core.model.config` | RG-P03-003 (registry), RG-P03-002 (primitives) | app | — |
 | IF-EXP-MACHINE | `ExperimentMachine` (pure transition function) | `rg_core.experiment` | RG-P02-007 | rg_core | — |
 | IF-ENG-ENGINE | `ExperimentEngine` | `revocationgap.engine` | RG-P03-010 | app | — |
 | IF-ENG-SERVICE | `ApplicationService` | `revocationgap.service` | RG-P03-010 | app | fake |
@@ -37,6 +39,13 @@
 | IF-ST-CATALOG | `OperationCatalog` | `rg_stbridge` | RG-P05-005 | rg_stbridge | fixture catalog |
 | IF-ST-GEN | baseline/scenario generation | `rg_stbridge.generate` | RG-P07-005 | rg_stbridge | — |
 | IF-SCN-LOADER | `ScenarioLoader` | `rg_core.scenario` | RG-P07-001 | rg_core | — |
+| IF-CORE-CLOCKGUARD | startup clock calibration / anomaly guard | `rg_core.time` | RG-P02-001 | rg_core | — |
+| IF-CORE-AUTHSTATE | `AuthorizationState` store/diff | `rg_core.model.identity` | RG-P02-002 | rg_core | — |
+| IF-CORE-CREDGRAPH | credential/session lifecycle graph | `rg_core.model.credential` | RG-P02-003 | rg_core | — |
+| IF-CORE-EVENTORDER | revocation event ordering | `rg_core.model.revocation` | RG-P02-004 | rg_core | — |
+| IF-ANA-EXPECT | `ExpectationResolver` | `rg_core.analysis.expect` | RG-P02-005 | rg_core | — |
+| IF-CORE-OBSERVATION | Observation semantics / uncertainty components / confidence factors | `rg_core.model.observation` | RG-P02-006 | rg_core | — |
+| IF-CORE-TIMELINE | `Timeline` build/query | `rg_core.timeline` | RG-P02-008 | rg_core | — |
 | IF-ANA-ALIGN | `ClockAligner` | `rg_core.analysis.align` | RG-P08-002 | rg_core | — |
 | IF-ANA-CORRELATE | `EventCorrelator` | `rg_core.analysis.correlate` | RG-P08-003 | rg_core | — |
 | IF-ANA-WINDOW | `ExposureCalculator` | `rg_core.analysis.window` | RG-P08-004 | rg_core | — |
@@ -53,11 +62,11 @@
 
 ## 2. Contract rules that apply to every interface
 
-1. **Cancellation:** every `async` method honours `asyncio.CancelledError` promptly (≤ the method's documented cancel budget, default 1 s) and leaves no half-applied state it cannot report (state-changing admin calls report `unknown outcome` rather than swallow cancellation).
+1. **Cancellation:** every `async` method honours `asyncio.CancelledError` promptly (≤ the method's documented cancel budget, default 1 s) and leaves no half-applied state it cannot report (state-changing admin calls report `unknown outcome` rather than swallow cancellation). **Exception (CCR-D):** a state-changing or durable operation (`RevocationAction.execute/restore`, store commits) runs under a *shielded grace* (`commit_grace`, default 30 s, configurable) beyond the 1 s budget; if it completes while the caller is being cancelled, its result (e.g. the `RevocationEvent` with `A_req/A_ack` and restoration data) MUST be recoverable by the cleanup path and is never discarded.
 2. **Time:** implementations receive a `Clock` at construction and never read system time directly. Methods that perform network I/O return the `TimeInstant` pair bracketing the wire interaction in their result objects (`started_at`, `finished_at`).
 3. **Secrets:** results are secret-free except explicit `CredentialMaterial` return types, which are `Secret`-wrapped and non-serialisable.
 4. **Idempotency:** methods with side effects document idempotency; `RevocationAction.execute` is **not** idempotent but `plan`/`verify`/`restore` are.
-5. **Errors:** a method never returns "success" for a partially failed operation; capability gaps raise `RgError(category=PROVIDER, code=RGE-PROVIDER-UNSUPPORTED)` with the `capability` name — callers must consult `capabilities()` first.
+5. **Errors:** a method never returns "success" for a partially failed operation; capability gaps raise `RgError(category=PROVIDER, code=RGE-PROVIDER-0001)` (symbolic name `UNSUPPORTED`) with the `capability` name — callers must consult `capabilities()` first.
 6. **Thread-safety:** stated per interface; default = *safe for concurrent calls from multiple tasks of one event loop*, not safe across threads.
 
 ## 3. Normative signatures (Python Protocol form)
@@ -102,7 +111,9 @@ class ExperimentStore(Protocol):                         # IF-CORE-STORE (single
     async def append_observation(self, exp_id: str, obs: Observation) -> None: ...
     async def append_event(self, exp_id: str, ev: RevocationEvent) -> None: ...
     async def put_derived(self, exp_id: str, rec: DerivedRecord) -> None: ...                # replaces same (algorithm, key) version
-    async def transition(self, exp_id: str, frm: ExperimentState, to: ExperimentState, at: TimeInstant) -> None: ...   # CAS on state
+    async def transition(self, exp_id: str, frm: ExperimentState, to: ExperimentState, at: TimeInstant, *,
+                          trigger: str | None = None, runtime_patch: Mapping[str, Any] | None = None,
+                          records: Sequence[TimelineEntry | Observation | RevocationEvent] = ()) -> None: ...   # CAS on state; `records` committed atomically in the same transaction (CCR-3)
     async def load(self, exp_id: str) -> ExperimentSnapshot: ...
     def query(self, q: ExperimentQuery) -> AsyncIterator[ExperimentSummary]: ...
 class EvidenceStore(Protocol):

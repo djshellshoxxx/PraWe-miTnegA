@@ -11,6 +11,7 @@
 | Versioning | Every persisted/exported document has `schema_version: "<major>.<minor>"` (e.g. `"1.0"`). Minor = additive. Major = breaking, requires a migration (RG-P11-006). |
 | Integers | Nanosecond quantities are Python `int` (64-bit range suffices: 2026 epoch ≈ 1.8×10¹⁸ < 9.2×10¹⁸). In **JSON documents** they are serialised as **decimal strings** (`"1791796800123456789"`) because JavaScript numbers lose precision above 2⁵³; JSON Schema `type: string, pattern: ^-?[0-9]+$, x-rg-format: int64`. SQLite stores native INTEGER. |
 | Secrets | Never in models. Models hold `SecretHandle` (§2.4) and fingerprints. |
+| Optionality | Nullable fields default to `None`; `None` never appears inside containers; `BoundedDuration.upper_ns` is *nullable with default `None`* (CCR-C); serialisation uses `exclude_unset`-safe round-trip rules defined in RG-P03-002 §9. |
 | Free text | Bounded (`max_length` stated per field); control characters stripped at the boundary; never interpreted as markup. |
 | Provenance | Every record that is not user input carries `derivation ∈ {observed, calculated, assumed, hypothesis}` (§5) and `produced_by` (component id + version). |
 
@@ -72,7 +73,7 @@ Rules: (1) durations between local events use `mono_ns` differences within one `
 
 ### 2.4 Secret handles
 
-`SecretHandle = "secret:<resolver>:<name>"` (e.g. `secret:env:RG_ALICE_PASSWORD`, `secret:keyring:rg/alice`, `secret:file:./secrets/alice.txt`). Material is resolved at the last moment through `SecretResolver` and held in `Secret` wrappers (no `repr`, no `str`, no pickling). A **fingerprint** of a credential = `sha256(material)[:12]` hex, prefixed `fp:`; fingerprints may be stored; truncation prevents recovery. Tokens in evidence are stored as `{fingerprint, type, format, decoded_header, allow-listed claims, exp/iat/nbf instants}`.
+`SecretHandle = "secret:<resolver>:<name>"` (e.g. `secret:env:RG_ALICE_PASSWORD`, `secret:keyring:rg/alice`, `secret:file:./secrets/alice.txt`). **Every** `Secret` — including those created by producers other than `SecretResolver` (IdP-issued tokens, cookies, rotated refresh tokens, the GUI session token) — MUST be registered with the redactor as a canary at creation (label form `canary:<kind>:<fp>` for non-handle secrets; CCR-B). Material is resolved at the last moment through `SecretResolver` and held in `Secret` wrappers (no `repr`, no `str`, no pickling). A **fingerprint** of a credential = `sha256(material)[:12]` hex, prefixed `fp:`; fingerprints may be stored for **high-entropy credential classes only** (token, cookie, API key, client secret, JWT); redaction markers for passwords, private keys, Basic credentials and URL userinfo carry **no** fingerprint, because a 48-bit truncated SHA-256 of a low-entropy secret is offline-guessable (RG-P03-004 DEC-6). Tokens in evidence are stored as `{fingerprint, type, format, decoded_header, allow-listed claims, exp/iat/nbf instants}`.
 
 ## 3. Enumerations (frozen values)
 
@@ -182,7 +183,7 @@ Reports must label each statement with its class (RG-P08-011). Findings may comb
 | `STORE` | persistence failure, corruption, lock conflict | sometimes |
 | `PLUGIN` | plugin load/compat/trust failure | no |
 | `UPSTREAM_COMPAT` | unsupported Schemathesis/Authlib version or isolation-guard failure | no |
-| `CANCELLED` | cooperative cancellation (not a failure) | n/a |
+| `CANCELLED` | cooperative cancellation (not a failure); when a mutation was left unrestored it carries `details.residual_state=true` and maps to CLI exit kind `residual_state` (CCR-J) | n/a |
 | `INTERNAL` | invariant violation (bug) | no |
 
 ## 7. Core entities (summary; field-level schemas in the owning specs)
@@ -219,6 +220,8 @@ Reports must label each statement with its class (RG-P08-011). Findings may comb
 | SCH-TIMELINE | TimelineEntry, Timeline | RG-P02-008 |
 | SCH-CLASSIFY | ClassificationRule, RationaleStep | RG-P02-009 |
 | SCH-SERIAL | schema registry, JSON Schema export, id factory | RG-P03-002 |
+| SCH-ERROR | ErrorRecord (serialised `RgError`) | RG-P03-005 |
+| SCH-LOGREC | structured JSON log line | RG-P03-004 |
 | SCH-CONFIG | config documents | RG-P03-003 |
 | SCH-PLUGIN | PluginManifest | RG-P03-009 |
 | SCH-CAPS | ProviderCapabilities, AdapterDescriptor | RG-P04-001 |

@@ -5,20 +5,20 @@ Every module has a stable id `MOD-<PACKAGE>-<SLUG>`, exactly one owning work ele
 <!-- BEGIN:CATALOG -->
 | Module id | Element | Package | Responsibility (element title) | Depends on | Spec | Status |
 |---|---|---|---|---|---|---|
-| MOD-CORE-TIME_AND_CLOCK_MODEL | RG-P02-001 | core | Time and clock model | P01-004, P03-001 | `06-MODULES/RG-P02-001-time-and-clock-model.md` | TODO |
-| MOD-CORE-IDENTITY_PERMISSION_STATE | RG-P02-002 | core | Identity and permission state model | P02-001 | `06-MODULES/RG-P02-002-identity-permission-state.md` | TODO |
-| MOD-CORE-CREDENTIAL_LIFECYCLE | RG-P02-003 | core | Credential, session and token lifecycle model | P02-002 | `06-MODULES/RG-P02-003-credential-lifecycle.md` | TODO |
-| MOD-CORE-REVOCATION_EVENT_MODEL | RG-P02-004 | core | Revocation event model and event ordering | P02-003 | `06-MODULES/RG-P02-004-revocation-event-model.md` | TODO |
-| MOD-CORE-EXPECTED_ENFORCEMENT_MODEL | RG-P02-005 | core | Expected enforcement model | P02-004 | `06-MODULES/RG-P02-005-expected-enforcement-model.md` | TODO |
-| MOD-CORE-OBSERVATION_CONFIDENCE_MODEL | RG-P02-006 | core | Observation and confidence model | P02-004 | `06-MODULES/RG-P02-006-observation-confidence-model.md` | TODO |
-| MOD-CORE-EXPERIMENT_STATE_MACHINE | RG-P02-007 | core | Experiment state machine and transitions | P02-005, P02-006 | `06-MODULES/RG-P02-007-experiment-state-machine.md` | TODO |
-| MOD-CORE-TIMELINE_REPRESENTATION | RG-P02-008 | core | Timeline representation | P02-006 | `06-MODULES/RG-P02-008-timeline-representation.md` | TODO |
-| MOD-CORE-OUTCOME_CLASSIFICATION | RG-P02-009 | core | Outcome classification rules | P02-005, P02-006, P02-007 | `06-MODULES/RG-P02-009-outcome-classification.md` | TODO |
-| MOD-CORE-SCHEMA_SERIALIZATION | RG-P03-002 | core | Shared schema and serialization framework | P03-001 | `06-MODULES/RG-P03-002-schema-serialization.md` | TODO |
-| MOD-APP-CONFIGURATION | RG-P03-003 | app | Configuration subsystem | P03-002 | `06-MODULES/RG-P03-003-configuration.md` | TODO |
-| MOD-CORE-LOGGING_REDACTION | RG-P03-004 | core | Logging, tracing and redaction | P03-002 | `06-MODULES/RG-P03-004-logging-redaction.md` | TODO |
-| MOD-CORE-ASYNC_ERRORS_CANCELLATION | RG-P03-005 | core | Async model, error taxonomy and cancellation | P03-002 | `06-MODULES/RG-P03-005-async-errors-cancellation.md` | TODO |
-| MOD-CORE-SCHEDULER | RG-P03-006 | core | Scheduler abstraction and clock injection | P02-001, P03-005 | `06-MODULES/RG-P03-006-scheduler.md` | TODO |
+| MOD-CORE-TIME_AND_CLOCK_MODEL | RG-P02-001 | core | Time and clock model | P01-004, P03-001 | `06-MODULES/RG-P02-001-time-and-clock-model.md` | DRAFT |
+| MOD-CORE-IDENTITY_PERMISSION_STATE | RG-P02-002 | core | Identity and permission state model | P02-001 | `06-MODULES/RG-P02-002-identity-permission-state.md` | DRAFT |
+| MOD-CORE-CREDENTIAL_LIFECYCLE | RG-P02-003 | core | Credential, session and token lifecycle model | P02-002 | `06-MODULES/RG-P02-003-credential-lifecycle.md` | DRAFT |
+| MOD-CORE-REVOCATION_EVENT_MODEL | RG-P02-004 | core | Revocation event model and event ordering | P02-003 | `06-MODULES/RG-P02-004-revocation-event-model.md` | DRAFT |
+| MOD-CORE-EXPECTED_ENFORCEMENT_MODEL | RG-P02-005 | core | Expected enforcement model | P02-004 | `06-MODULES/RG-P02-005-expected-enforcement-model.md` | DRAFT |
+| MOD-CORE-OBSERVATION_CONFIDENCE_MODEL | RG-P02-006 | core | Observation and confidence model | P02-004 | `06-MODULES/RG-P02-006-observation-confidence-model.md` | DRAFT |
+| MOD-CORE-EXPERIMENT_STATE_MACHINE | RG-P02-007 | core | Experiment state machine and transitions | P02-005, P02-006 | `06-MODULES/RG-P02-007-experiment-state-machine.md` | DRAFT |
+| MOD-CORE-TIMELINE_REPRESENTATION | RG-P02-008 | core | Timeline representation | P02-006 | `06-MODULES/RG-P02-008-timeline-representation.md` | DRAFT |
+| MOD-CORE-OUTCOME_CLASSIFICATION | RG-P02-009 | core | Outcome classification rules | P02-005, P02-006, P02-007 | `06-MODULES/RG-P02-009-outcome-classification.md` | DRAFT |
+| MOD-CORE-SCHEMA_SERIALIZATION | RG-P03-002 | core | Shared schema and serialization framework | P03-001 | `06-MODULES/RG-P03-002-schema-serialization.md` | DRAFT |
+| MOD-APP-CONFIGURATION | RG-P03-003 | app | Configuration subsystem | P03-002 | `06-MODULES/RG-P03-003-configuration.md` | DRAFT |
+| MOD-CORE-LOGGING_REDACTION | RG-P03-004 | core | Logging, tracing and redaction | P03-002 | `06-MODULES/RG-P03-004-logging-redaction.md` | DRAFT |
+| MOD-CORE-ASYNC_ERRORS_CANCELLATION | RG-P03-005 | core | Async model, error taxonomy and cancellation | P03-002 | `06-MODULES/RG-P03-005-async-errors-cancellation.md` | DRAFT |
+| MOD-CORE-SCHEDULER | RG-P03-006 | core | Scheduler abstraction and clock injection | P02-001, P03-005 | `06-MODULES/RG-P03-006-scheduler.md` | DRAFT |
 | MOD-CORE-EVENT_BUS | RG-P03-007 | core | Event bus | P03-005 | `06-MODULES/RG-P03-007-event-bus.md` | TODO |
 | MOD-APP-PERSISTENCE_STORE | RG-P03-008 | app | Persistence layer and evidence store | P03-002, P02-006 | `06-MODULES/RG-P03-008-persistence-store.md` | TODO |
 | MOD-CORE-PLUGIN_ARCHITECTURE | RG-P03-009 | core | Plugin architecture | P03-002, P03-005 | `06-MODULES/RG-P03-009-plugin-architecture.md` | TODO |

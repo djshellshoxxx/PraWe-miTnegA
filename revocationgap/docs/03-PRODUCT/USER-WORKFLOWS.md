@@ -57,14 +57,14 @@ depends_on: [RG-P01-001]
 
 ## 3. Experiment states visible to the user
 
-Names only; legality of transitions, timeouts and invariants are specified in RG-P02-007. The workflows use these names in the **expected happy-path order** `DRAFT → VALIDATED → ARMED → BASELINING → REVOKING → OBSERVING → ANALYZING → COMPLETE`, with `CLEANING_UP` running after any of `ANALYZING`, `FAILED`, `ABORTED` (ASM-UW-01).
+Names only; legality of transitions, timeouts and invariants are specified in RG-P02-007. The workflows use these names in the **expected happy-path order** `DRAFT → VALIDATED → BASELINING → ARMED → REVOKING → OBSERVING → ANALYZING → CLEANING_UP → COMPLETE|INCONCLUSIVE`, with `CLEANING_UP` also following `FAILED` and `ABORTED` when state was mutated (ASM-UW-01, **corrected by RG-P02-007 §10.1 / CCR-1**: the arming confirmation is recorded in `VALIDATED` and consumed by `start`; `ARMED` means the baseline/control gate passed, the confirmation and scope digest are pinned, and the run awaits the settle interval).
 
 | State | User-visible meaning | What the operator can do |
 |---|---|---|
 | `DRAFT` | Scenario + fixture/scope chosen; not yet checked | Edit, validate |
 | `VALIDATED` | Dry run passed: scope, plan, budgets, capabilities consistent; nothing sent to targets | Arm, edit (returns to DRAFT) |
-| `ARMED` | Operator confirmed tenant/identities/actions; scope digest pinned | Start, disarm |
-| `BASELINING` | Positive/negative/sibling controls and pre-event baseline running | Abort |
+| `ARMED` | Baseline/control gate passed; the operator's confirmation (given while `VALIDATED`) and the scope digest are pinned; waiting for the settle interval before revocation | Abort (disarm = abort before REVOKING) |
+| `BASELINING` | Starts after the operator's confirmation (`start`): positive/negative/sibling controls and pre-event baseline running | Abort |
 | `REVOKING` | Revocation event being executed (automated) or awaited (manual); anchor being fixed | Confirm manual acknowledgment, abort |
 | `OBSERVING` | Scheduled probes of original and alternative credentials running | Abort; watch live timeline |
 | `ANALYZING` | Interval, uncertainty, correlation and classification being computed | — |
@@ -296,7 +296,7 @@ The scope file is the single authorization gate (RU-01). Each requirement is tes
 
 | ID | Assumption / open question | Owner |
 |---|---|---|
-| ASM-UW-01 | The ordering `… ANALYZING → CLEANING_UP → COMPLETE` and the rule that `CLEANING_UP` also follows `FAILED`/`ABORTED` are workflow-level expectations for RG-P02-007 to confirm or change | RG-P02-007 |
+| ASM-UW-01 | (Resolved by RG-P02-007 — see §3.) The ordering `… ANALYZING → CLEANING_UP → COMPLETE` and the rule that `CLEANING_UP` also follows `FAILED`/`ABORTED` are workflow-level expectations for RG-P02-007 to confirm or change | RG-P02-007 |
 | ASM-UW-02 | State `INCONCLUSIVE` coincides with outcome class `INCONCLUSIVE`; all other classes are carried by `COMPLETE` | RG-P02-007/-009 |
 | ASM-UW-03 | Re-analysis under another profile creates a new analysis record and never mutates the stored classification | RG-P08-006/-011 |
 | ASM-UW-04 | Automatic resumption of an interrupted `OBSERVING` phase is not MVP; recovery restores and ends the run as partial | RG-P11-005 |

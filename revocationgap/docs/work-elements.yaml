@@ -36,22 +36,22 @@ elements:
   - {id: RG-P01-003, title: "Threat model (target-side attack objectives and tool-side risks)", kind: doc, pkg: docs, deps: [RG-P01-001], spec: 03-PRODUCT/THREAT-MODEL.md, status: COMPLETE}
   - {id: RG-P01-004, title: "Product requirements, feature matrix and MVP scope", kind: doc, pkg: docs, deps: [RG-P01-002, RG-P01-003], spec: 03-PRODUCT/PRODUCT-REQUIREMENTS.md, status: COMPLETE}
 # ---------------- PHASE 02 (rg_core: temporal model) ----------------
-  - {id: RG-P02-001, title: "Time and clock model", slug: time-and-clock-model, kind: module, pkg: core, deps: [RG-P01-004, RG-P03-001], status: TODO}
-  - {id: RG-P02-002, title: "Identity and permission state model", slug: identity-permission-state, kind: module, pkg: core, deps: [RG-P02-001], status: TODO}
-  - {id: RG-P02-003, title: "Credential, session and token lifecycle model", slug: credential-lifecycle, kind: module, pkg: core, deps: [RG-P02-002], status: TODO}
-  - {id: RG-P02-004, title: "Revocation event model and event ordering", slug: revocation-event-model, kind: module, pkg: core, deps: [RG-P02-003], status: TODO}
-  - {id: RG-P02-005, title: "Expected enforcement model", slug: expected-enforcement-model, kind: module, pkg: core, deps: [RG-P02-004], status: TODO}
-  - {id: RG-P02-006, title: "Observation and confidence model", slug: observation-confidence-model, kind: module, pkg: core, deps: [RG-P02-004], status: TODO}
-  - {id: RG-P02-007, title: "Experiment state machine and transitions", slug: experiment-state-machine, kind: module, pkg: core, deps: [RG-P02-005, RG-P02-006], status: TODO}
-  - {id: RG-P02-008, title: "Timeline representation", slug: timeline-representation, kind: module, pkg: core, deps: [RG-P02-006], status: TODO}
-  - {id: RG-P02-009, title: "Outcome classification rules", slug: outcome-classification, kind: module, pkg: core, deps: [RG-P02-005, RG-P02-006, RG-P02-007], status: TODO}
+  - {id: RG-P02-001, title: "Time and clock model", slug: time-and-clock-model, kind: module, pkg: core, deps: [RG-P01-004, RG-P03-001], status: DRAFT}
+  - {id: RG-P02-002, title: "Identity and permission state model", slug: identity-permission-state, kind: module, pkg: core, deps: [RG-P02-001], status: DRAFT}
+  - {id: RG-P02-003, title: "Credential, session and token lifecycle model", slug: credential-lifecycle, kind: module, pkg: core, deps: [RG-P02-002], status: DRAFT}
+  - {id: RG-P02-004, title: "Revocation event model and event ordering", slug: revocation-event-model, kind: module, pkg: core, deps: [RG-P02-003], status: DRAFT}
+  - {id: RG-P02-005, title: "Expected enforcement model", slug: expected-enforcement-model, kind: module, pkg: core, deps: [RG-P02-004], status: DRAFT}
+  - {id: RG-P02-006, title: "Observation and confidence model", slug: observation-confidence-model, kind: module, pkg: core, deps: [RG-P02-004], status: DRAFT}
+  - {id: RG-P02-007, title: "Experiment state machine and transitions", slug: experiment-state-machine, kind: module, pkg: core, deps: [RG-P02-005, RG-P02-006], status: DRAFT}
+  - {id: RG-P02-008, title: "Timeline representation", slug: timeline-representation, kind: module, pkg: core, deps: [RG-P02-006], status: DRAFT}
+  - {id: RG-P02-009, title: "Outcome classification rules", slug: outcome-classification, kind: module, pkg: core, deps: [RG-P02-005, RG-P02-006, RG-P02-007], status: DRAFT}
 # ---------------- PHASE 03 (architecture / platform) ----------------
   - {id: RG-P03-001, title: "System architecture, package boundaries, shared contracts and ADRs", kind: doc, pkg: docs, deps: [RG-P01-004], spec: 04-ARCHITECTURE/SYSTEM-ARCHITECTURE.md, status: COMPLETE}
-  - {id: RG-P03-002, title: "Shared schema and serialization framework", slug: schema-serialization, kind: module, pkg: core, deps: [RG-P03-001], status: TODO}
-  - {id: RG-P03-003, title: "Configuration subsystem", slug: configuration, kind: module, pkg: app, deps: [RG-P03-002], status: TODO}
-  - {id: RG-P03-004, title: "Logging, tracing and redaction", slug: logging-redaction, kind: module, pkg: core, deps: [RG-P03-002], status: TODO}
-  - {id: RG-P03-005, title: "Async model, error taxonomy and cancellation", slug: async-errors-cancellation, kind: module, pkg: core, deps: [RG-P03-002], status: TODO}
-  - {id: RG-P03-006, title: "Scheduler abstraction and clock injection", slug: scheduler, kind: module, pkg: core, deps: [RG-P02-001, RG-P03-005], status: TODO}
+  - {id: RG-P03-002, title: "Shared schema and serialization framework", slug: schema-serialization, kind: module, pkg: core, deps: [RG-P03-001], status: DRAFT}
+  - {id: RG-P03-003, title: "Configuration subsystem", slug: configuration, kind: module, pkg: app, deps: [RG-P03-002], status: DRAFT}
+  - {id: RG-P03-004, title: "Logging, tracing and redaction", slug: logging-redaction, kind: module, pkg: core, deps: [RG-P03-002], status: DRAFT}
+  - {id: RG-P03-005, title: "Async model, error taxonomy and cancellation", slug: async-errors-cancellation, kind: module, pkg: core, deps: [RG-P03-002], status: DRAFT}
+  - {id: RG-P03-006, title: "Scheduler abstraction and clock injection", slug: scheduler, kind: module, pkg: core, deps: [RG-P02-001, RG-P03-005], status: DRAFT}
   - {id: RG-P03-007, title: "Event bus", slug: event-bus, kind: module, pkg: core, deps: [RG-P03-005], status: TODO}
   - {id: RG-P03-008, title: "Persistence layer and evidence store", slug: persistence-store, kind: module, pkg: app, deps: [RG-P03-002, RG-P02-006], status: TODO}
   - {id: RG-P03-009, title: "Plugin architecture", slug: plugin-architecture, kind: module, pkg: core, deps: [RG-P03-002, RG-P03-005], status: TODO}

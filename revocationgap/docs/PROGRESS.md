@@ -28,9 +28,9 @@ Write `02-RESEARCH/REPO-ASSESSMENT.md`, `02-RESEARCH/SCHEMATHESIS-INTEGRATION.md
 <!-- BEGIN:STATUS -->
 | Status | Count |
 |---|---|
-| TODO | 103 |
+| TODO | 89 |
 | IN_PROGRESS | 0 |
-| DRAFT | 0 |
+| DRAFT | 14 |
 | COMPLETE | 11 |
 | BLOCKED | 0 |
 
