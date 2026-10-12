@@ -29,3 +29,35 @@ def test_event_log_has_ordered_virtual_timestamps():
     result = run_authorization_scenario(expiry=10, execution=11)
     times = [event["time"] for event in result.events]
     assert times == sorted(times)
+
+
+import math
+import pytest
+
+
+@pytest.mark.parametrize("invalid", [math.nan, math.inf, -math.inf])
+def test_scenario_rejects_nonfinite_expiry(invalid):
+    with pytest.raises(ValueError, match="finite"):
+        run_authorization_scenario(expiry=invalid, execution=5)
+
+
+@pytest.mark.parametrize("invalid", [math.nan, math.inf, -math.inf])
+def test_scenario_rejects_nonfinite_execution(invalid):
+    with pytest.raises(ValueError, match="finite"):
+        run_authorization_scenario(expiry=10, execution=invalid)
+
+
+@pytest.mark.parametrize("invalid", [math.nan, math.inf, -math.inf])
+def test_fuzzer_rejects_nonfinite_offsets(invalid):
+    with pytest.raises(ValueError, match="finite"):
+        fuzz_authorization_expiry(expiry=10, offsets=(invalid,))
+
+
+def test_fuzzer_rejects_nonfinite_expiry_even_without_offsets():
+    with pytest.raises(ValueError, match="finite"):
+        fuzz_authorization_expiry(expiry=math.nan, offsets=())
+
+
+def test_fuzzer_handles_large_offset_without_infinite_execution():
+    with pytest.raises(ValueError, match="finite"):
+        fuzz_authorization_expiry(expiry=1e308, offsets=(1e308,))
