@@ -82,7 +82,8 @@ def parse_spec(path):
     return fm, body, secs
 
 
-def check(final=False):
+def check(final=False, force=None):
+    force = force or set()
     errs, warns = [], []
     phases, elements = load_registry()
     ids = [e["id"] for e in elements]
@@ -102,14 +103,14 @@ def check(final=False):
     defined_if = set(); used_if = set(); req_cov = collections.defaultdict(set)
     for e in elements:
         p = spec_path(e)
-        if e["status"] in ("DRAFT", "COMPLETE"):
+        if e["status"] in ("DRAFT", "COMPLETE") or e["id"] in force:
             if not p.exists():
                 errs.append(f"{e['id']}: status {e['status']} but missing {p.relative_to(DOCS)}"); continue
             if e["status"] == "COMPLETE":
                 for d in e["deps"]:
                     if by[d]["status"] not in ("COMPLETE",) and e["kind"] != "audit":
                         warns.append(f"{e['id']}: COMPLETE but dependency {d} is {by[d]['status']}")
-        if e["kind"] != "module" or e["status"] not in ("DRAFT", "COMPLETE") or not p.exists():
+        if e["kind"] != "module" or (e["status"] not in ("DRAFT", "COMPLETE") and e["id"] not in force) or not p.exists():
             continue
         fm, body, secs = parse_spec(p)
         rel = p.relative_to(DOCS)
@@ -221,6 +222,17 @@ def render():
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else "check"
     if cmd == "check": sys.exit(check("--final" in sys.argv))
+    if cmd == "lint":   # lint specific element ids regardless of registry status: specgate.py lint RG-P02-001 ...
+        ids = set(a for a in sys.argv[2:] if a.startswith("RG-"))
+        import io, contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = check(False, force=ids)
+        _, els = load_registry()
+        keys = {e["id"] for e in els if e["id"] in ids} | {spec_path(e).name for e in els if e["id"] in ids}
+        lines = [l for l in buf.getvalue().splitlines() if any(k in l for k in keys)]
+        print("\n".join(lines) if lines else "lint OK: " + ", ".join(sorted(ids)))
+        sys.exit(1 if any(l.startswith("ERROR") for l in lines) else 0)
     if cmd == "render": render()
     elif cmd == "order":
         _, els = load_registry(); order, _ = topo(els)
