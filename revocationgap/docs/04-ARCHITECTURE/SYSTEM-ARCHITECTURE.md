@@ -206,6 +206,28 @@ Entry-point groups (ADR-0009) with `api_version` compatibility and capability ma
 | 0013 | Evidence collection and interpretation separated |
 | 0014 | Lab dual mode (virtual-time / real-time) |
 
-## 13. Requirement-to-architecture mapping
+## 13. Requirement-area to architecture mapping
 
-Completed after the PRD (RG-P01-004) is final: [`COMPONENT-CATALOG.md`](COMPONENT-CATALOG.md) lists every component with owning element and requirement areas; the generated [`../REQUIREMENTS-TRACEABILITY.md`](../REQUIREMENTS-TRACEABILITY.md) maps requirement → module → interface → test.
+Requirement ids are defined in [`../03-PRODUCT/PRODUCT-REQUIREMENTS.md`](../03-PRODUCT/PRODUCT-REQUIREMENTS.md); the generated [`../REQUIREMENTS-TRACEABILITY.md`](../REQUIREMENTS-TRACEABILITY.md) gives the per-requirement module/interface/test mapping once module specs exist. Area-level allocation (frozen here so parallel authors cite consistent owners):
+
+| Area | Primary package / modules | Elements (spec owners) |
+|---|---|---|
+| FR-TEMP | `rg_core.time`, `.model.*`, `.experiment`, `.analysis.window` | RG-P02-001…009, RG-P08-004 |
+| FR-EXP | `revocationgap.engine`, `rg_core.experiment` | RG-P02-007, RG-P03-010, RG-P11-005 |
+| FR-IDP | `rg_idp.*`, `rg_core.ports.idp` | RG-P04-001…011 |
+| FR-REV | `rg_core.ports.revocation`, `rg_idp.actions.*`, `revocationgap.engine.manual` | RG-P06-001…010 |
+| FR-PRB | `rg_probe.*`, `rg_core.ports.assertions` | RG-P05-001…004, 006…014 |
+| FR-ST | `rg_stbridge.*` | RG-P05-005, RG-P05-012, RG-P07-005 |
+| FR-SCN | `rg_core.scenario`, scenario packs | RG-P07-001…005 |
+| FR-EVD | `rg_core.evidence`, `revocationgap.store` | RG-P03-008, RG-P08-001, RG-P11-003 |
+| FR-ANA | `rg_core.analysis.*`, `revocationgap.history` | RG-P02-009, RG-P08-002…010 |
+| FR-RPT | `rg_core.report`, `revocationgap.report` | RG-P08-011 |
+| FR-LAB | `rg_lab.*` | RG-P09-001…006 |
+| FR-CLI / FR-GUI / FR-API | `revocationgap.cli`, `.gui`, `.api`, `.service` | RG-P10-001…007 |
+| FR-SEC | `rg_core.scope`, `rg_core.logging` (redaction), `revocationgap.secrets`, audit | RG-P11-001…004, RG-P03-004 |
+| FR-OPS | `revocationgap.config`, `.doctor`, `.migrate` | RG-P03-003, RG-P11-006, RG-P03-011 |
+| FR-EXT | `rg_core.ports.plugins`, `revocationgap.plugins` | RG-P03-009, RG-P11-004 |
+| FR-HIST | `revocationgap.history` | RG-P08-009 |
+| NFR-* | cross-cutting; verification in Phase 12 | RG-P12-001…006, RG-P13-001…004 |
+
+**Time source decision carried from the PRD (NFR-PERF-002):** `Clock.mono_ns()` is backed by `time.perf_counter_ns()`; `rg_core.testing`/lint rules ban direct clock calls elsewhere.

@@ -99,10 +99,10 @@ Status legend: TODO · IN_PROGRESS · DRAFT (authored, awaiting review) · COMPL
 
 | ID | Element | Pkg | Kind | Depends on | Spec | Order | Status |
 |---|---|---|---|---|---|---|---|
-| RG-P01-001 | Project charter | docs | doc | P00-006 | `00-PROJECT-CHARTER.md` | 7 | TODO |
-| RG-P01-002 | Personas and user workflows | docs | doc | P01-001 | `03-PRODUCT/USER-WORKFLOWS.md` | 8 | TODO |
-| RG-P01-003 | Threat model (target-side attack objectives and tool-side risks) | docs | doc | P01-001 | `03-PRODUCT/THREAT-MODEL.md` | 9 | TODO |
-| RG-P01-004 | Product requirements, feature matrix and MVP scope | docs | doc | P01-002, P01-003 | `03-PRODUCT/PRODUCT-REQUIREMENTS.md` | 10 | TODO |
+| RG-P01-001 | Project charter | docs | doc | P00-006 | `00-PROJECT-CHARTER.md` | 7 | COMPLETE |
+| RG-P01-002 | Personas and user workflows | docs | doc | P01-001 | `03-PRODUCT/USER-WORKFLOWS.md` | 8 | COMPLETE |
+| RG-P01-003 | Threat model (target-side attack objectives and tool-side risks) | docs | doc | P01-001 | `03-PRODUCT/THREAT-MODEL.md` | 9 | COMPLETE |
+| RG-P01-004 | Product requirements, feature matrix and MVP scope | docs | doc | P01-002, P01-003 | `03-PRODUCT/PRODUCT-REQUIREMENTS.md` | 10 | COMPLETE |
 
 #### PHASE-02 — Temporal Authorization Model
 
@@ -122,7 +122,7 @@ Status legend: TODO · IN_PROGRESS · DRAFT (authored, awaiting review) · COMPL
 
 | ID | Element | Pkg | Kind | Depends on | Spec | Order | Status |
 |---|---|---|---|---|---|---|---|
-| RG-P03-001 | System architecture, package boundaries, shared contracts and ADRs | docs | doc | P01-004 | `04-ARCHITECTURE/SYSTEM-ARCHITECTURE.md` | 11 | TODO |
+| RG-P03-001 | System architecture, package boundaries, shared contracts and ADRs | docs | doc | P01-004 | `04-ARCHITECTURE/SYSTEM-ARCHITECTURE.md` | 11 | COMPLETE |
 | RG-P03-002 | Shared schema and serialization framework | core | module | P03-001 | `06-MODULES/RG-P03-002-schema-serialization.md` | 21 | TODO |
 | RG-P03-003 | Configuration subsystem | app | module | P03-002 | `06-MODULES/RG-P03-003-configuration.md` | 22 | TODO |
 | RG-P03-004 | Logging, tracing and redaction | core | module | P03-002 | `06-MODULES/RG-P03-004-logging-redaction.md` | 23 | TODO |
