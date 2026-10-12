@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from dataclasses import asdict, dataclass
 from typing import Any, Iterable
 
@@ -29,6 +30,8 @@ def run_authorization_scenario(
     Authorization is checked at execution time by the correct policy. The
     defective mode deliberately reuses approval obtained at virtual time zero.
     """
+    if not math.isfinite(expiry) or not math.isfinite(execution):
+        raise ValueError("expiry and execution must be finite")
     if expiry <= 0 or execution < 0:
         raise ValueError("expiry must be positive and execution must be non-negative")
 
@@ -58,7 +61,20 @@ def fuzz_authorization_expiry(
     *, expiry: float, offsets: Iterable[float] = (-1, 0, 1), buggy_cached_authorization: bool = False
 ) -> list[ScenarioResult]:
     """Boundary-focused schedule mutation returning only verified violations."""
-    candidates = sorted({float(expiry + offset) for offset in offsets if expiry + offset >= 0})
+    if not math.isfinite(expiry):
+        raise ValueError("expiry must be finite")
+    if expiry <= 0:
+        raise ValueError("expiry must be positive")
+    candidates = set()
+    for offset in offsets:
+        if not math.isfinite(offset):
+            raise ValueError("offsets must be finite")
+        execution = expiry + offset
+        if not math.isfinite(execution):
+            raise ValueError("computed execution must be finite")
+        if execution >= 0:
+            candidates.add(float(execution))
+    candidates = sorted(candidates)
     return [r for when in candidates if (r := run_authorization_scenario(
         expiry=expiry, execution=when, buggy_cached_authorization=buggy_cached_authorization
     )).violation]
