@@ -11,6 +11,7 @@ dependencies = ["simpy>=4.1,<5"]
 dev = ["pytest>=8,<10"]
 [project.scripts]
 prawe = "prawemintega.core:main"
+prawe-revocation = "prawemintega.revocation_cli:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 [tool.pytest.ini_options]
