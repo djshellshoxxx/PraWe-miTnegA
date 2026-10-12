@@ -26,10 +26,10 @@ elements:
 # ---------------- PHASE 00 ----------------
   - {id: RG-P00-001, title: "Repository discovery and existing-work assessment", kind: doc, pkg: docs, deps: [], spec: 02-RESEARCH/REPO-ASSESSMENT.md, status: COMPLETE}
   - {id: RG-P00-002, title: "Schemathesis integration research and adapter-boundary specification", kind: doc, pkg: stbridge, deps: [RG-P00-001], spec: 02-RESEARCH/SCHEMATHESIS-INTEGRATION.md, status: COMPLETE}
-  - {id: RG-P00-003, title: "Standards inventory and expected-enforcement reference", kind: research, pkg: docs, deps: [RG-P00-001], spec: 02-RESEARCH/STANDARDS-REFERENCE.md, status: TODO}
-  - {id: RG-P00-004, title: "Competitive and prior-art analysis", kind: research, pkg: docs, deps: [RG-P00-001], spec: 02-RESEARCH/COMPETITIVE-ANALYSIS.md, status: TODO}
-  - {id: RG-P00-005, title: "Identity provider and library capability research (Keycloak, Entra, Okta, Auth0, Authlib)", kind: research, pkg: idp, deps: [RG-P00-001], spec: 02-RESEARCH/providers/README.md, status: TODO}
-  - {id: RG-P00-006, title: "Technical feasibility, stack evaluation, risk register, research register", kind: doc, pkg: docs, deps: [RG-P00-002, RG-P00-003, RG-P00-004, RG-P00-005], spec: 02-RESEARCH/TECHNICAL-FEASIBILITY.md, status: TODO}
+  - {id: RG-P00-003, title: "Standards inventory and expected-enforcement reference", kind: research, pkg: docs, deps: [RG-P00-001], spec: 02-RESEARCH/STANDARDS-REFERENCE.md, status: COMPLETE}
+  - {id: RG-P00-004, title: "Competitive and prior-art analysis", kind: research, pkg: docs, deps: [RG-P00-001], spec: 02-RESEARCH/COMPETITIVE-ANALYSIS.md, status: COMPLETE}
+  - {id: RG-P00-005, title: "Identity provider and library capability research (Keycloak, Entra, Okta, Auth0, Authlib)", kind: research, pkg: idp, deps: [RG-P00-001], spec: 02-RESEARCH/providers/README.md, status: COMPLETE}
+  - {id: RG-P00-006, title: "Technical feasibility, stack evaluation, risk register, research register", kind: doc, pkg: docs, deps: [RG-P00-002, RG-P00-003, RG-P00-004, RG-P00-005], spec: 02-RESEARCH/TECHNICAL-FEASIBILITY.md, status: COMPLETE}
 # ---------------- PHASE 01 ----------------
   - {id: RG-P01-001, title: "Project charter", kind: doc, pkg: docs, deps: [RG-P00-006], spec: 00-PROJECT-CHARTER.md, status: TODO}
   - {id: RG-P01-002, title: "Personas and user workflows", kind: doc, pkg: docs, deps: [RG-P01-001], spec: 03-PRODUCT/USER-WORKFLOWS.md, status: TODO}

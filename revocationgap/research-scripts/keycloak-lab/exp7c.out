@@ -1,0 +1,8 @@
+realm idle now: 60
+t+10s now=1791784548474 introspect=True mySession=[(1791784538000, 1791784538000)]
+t+65s now=1791784603479 introspect=False mySession=[]
+t+75s now=1791784613721 introspect=False mySession=[]
+t+90s now=1791784628479 introspect=False mySession=[]
+t+150s now=1791784688606 introspect=False mySession=[]
+t+200s now=1791784738517 introspect=False mySession=[]
+refresh: 400 {'error': 'invalid_grant', 'error_description': 'Token is not active'}

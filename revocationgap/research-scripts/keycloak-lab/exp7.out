@@ -1,0 +1,16 @@
+iat 1791784288 exp 1791784298 expires_in 10 refresh_expires_in 60 rt exp-iat 60 auth_time None
+t+5s local_exp_remaining=4.6 introspect=True userinfo=200
+t+9s local_exp_remaining=0.7 introspect=True userinfo=200
+t+11s local_exp_remaining=-1.4 introspect=False userinfo=401
+t+12s local_exp_remaining=-2.3 introspect=False userinfo=401
+t+30s local_exp_remaining=-20.4 introspect=False userinfo=401
+   (no refresh)
+t+55s local_exp_remaining=-45.3 introspect=False userinfo=401
+   (no refresh)
+t+59s local_exp_remaining=-49.3 introspect=False userinfo=401
+t+61s local_exp_remaining=-51.3 introspect=False userinfo=401
+t+63s local_exp_remaining=-53.3 introspect=False userinfo=401
+t+65s local_exp_remaining=-55.3 introspect=False userinfo=401
+t+70s local_exp_remaining=-60.4 introspect=False userinfo=401
+t+80s local_exp_remaining=-70.3 introspect=False userinfo=401
+refresh after idle: 400 Token is not active

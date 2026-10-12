@@ -90,10 +90,10 @@ Status legend: TODO · IN_PROGRESS · DRAFT (authored, awaiting review) · COMPL
 |---|---|---|---|---|---|---|---|
 | RG-P00-001 | Repository discovery and existing-work assessment | docs | doc | — | `02-RESEARCH/REPO-ASSESSMENT.md` | 1 | COMPLETE |
 | RG-P00-002 | Schemathesis integration research and adapter-boundary specification | stbridge | doc | P00-001 | `02-RESEARCH/SCHEMATHESIS-INTEGRATION.md` | 2 | COMPLETE |
-| RG-P00-003 | Standards inventory and expected-enforcement reference | docs | research | P00-001 | `02-RESEARCH/STANDARDS-REFERENCE.md` | 3 | TODO |
-| RG-P00-004 | Competitive and prior-art analysis | docs | research | P00-001 | `02-RESEARCH/COMPETITIVE-ANALYSIS.md` | 4 | TODO |
-| RG-P00-005 | Identity provider and library capability research (Keycloak, Entra, Okta, Auth0, Authlib) | idp | research | P00-001 | `02-RESEARCH/providers/README.md` | 5 | TODO |
-| RG-P00-006 | Technical feasibility, stack evaluation, risk register, research register | docs | doc | P00-002, P00-003, P00-004, P00-005 | `02-RESEARCH/TECHNICAL-FEASIBILITY.md` | 6 | TODO |
+| RG-P00-003 | Standards inventory and expected-enforcement reference | docs | research | P00-001 | `02-RESEARCH/STANDARDS-REFERENCE.md` | 3 | COMPLETE |
+| RG-P00-004 | Competitive and prior-art analysis | docs | research | P00-001 | `02-RESEARCH/COMPETITIVE-ANALYSIS.md` | 4 | COMPLETE |
+| RG-P00-005 | Identity provider and library capability research (Keycloak, Entra, Okta, Auth0, Authlib) | idp | research | P00-001 | `02-RESEARCH/providers/README.md` | 5 | COMPLETE |
+| RG-P00-006 | Technical feasibility, stack evaluation, risk register, research register | docs | doc | P00-002, P00-003, P00-004, P00-005 | `02-RESEARCH/TECHNICAL-FEASIBILITY.md` | 6 | COMPLETE |
 
 #### PHASE-01 — Product Requirements and Threat Modeling
 

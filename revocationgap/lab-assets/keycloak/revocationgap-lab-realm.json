@@ -1,0 +1,43 @@
+{
+  "realm": "rgap",
+  "enabled": true,
+  "sslRequired": "none",
+  "accessTokenLifespan": 300,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "revokeRefreshToken": false,
+  "refreshTokenMaxReuse": 0,
+  "eventsEnabled": true,
+  "adminEventsEnabled": true,
+  "adminEventsDetailsEnabled": true,
+  "enabledEventTypes": ["LOGIN","LOGIN_ERROR","LOGOUT","LOGOUT_ERROR","CODE_TO_TOKEN","CODE_TO_TOKEN_ERROR","CLIENT_LOGIN","CLIENT_LOGIN_ERROR","REFRESH_TOKEN","REFRESH_TOKEN_ERROR","INTROSPECT_TOKEN","INTROSPECT_TOKEN_ERROR","USER_INFO_REQUEST","USER_INFO_REQUEST_ERROR","REVOKE_GRANT","RESET_PASSWORD","UPDATE_PASSWORD"],
+  "roles": { "realm": [ { "name": "rg-direct" }, { "name": "rg-group" } ] },
+  "groups": [ { "name": "rg-g1", "realmRoles": ["rg-group"] } ],
+  "clients": [
+    {
+      "clientId": "rg-tester", "enabled": true, "publicClient": false, "secret": "rg-tester-secret",
+      "standardFlowEnabled": true, "directAccessGrantsEnabled": true, "serviceAccountsEnabled": false,
+      "redirectUris": ["http://127.0.0.1:9999/*"],
+      "attributes": { "post.logout.redirect.uris": "+", "backchannel.logout.session.required": "true" },
+      "protocolMappers": [
+        { "name": "aud-rg-rs", "protocol": "openid-connect", "protocolMapper": "oidc-audience-mapper",
+          "config": { "included.client.audience": "rg-rs", "access.token.claim": "true", "id.token.claim": "false", "introspection.token.claim": "true" } }
+      ]
+    },
+    {
+      "clientId": "rg-rs", "enabled": true, "publicClient": false, "secret": "rg-rs-secret",
+      "standardFlowEnabled": false, "directAccessGrantsEnabled": false, "serviceAccountsEnabled": true
+    },
+    {
+      "clientId": "rg-admin", "enabled": true, "publicClient": false, "secret": "rg-admin-secret",
+      "standardFlowEnabled": false, "directAccessGrantsEnabled": false, "serviceAccountsEnabled": true
+    }
+  ],
+  "users": [
+    { "username": "rg-alice", "enabled": true, "email": "rg-alice@example.test", "emailVerified": true, "firstName": "Alice", "lastName": "Lab",
+      "credentials": [ { "type": "password", "value": "Passw0rd!", "temporary": false } ],
+      "realmRoles": ["rg-direct"], "groups": ["/rg-g1"] },
+    { "username": "service-account-rg-admin", "enabled": true, "serviceAccountClientId": "rg-admin",
+      "clientRoles": { "realm-management": ["manage-users", "view-users", "manage-realm", "view-events", "manage-events", "manage-clients", "view-realm"] } }
+  ]
+}
