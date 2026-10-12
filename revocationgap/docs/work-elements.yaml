@@ -1,0 +1,154 @@
+# CANONICAL WORK-ELEMENT REGISTRY — single source of truth for roadmap tables, order and status.
+# Edit ONLY this file to change status/deps; run `python tools/specgate.py render` to regenerate tables in
+# 01-MASTER-ROADMAP.md (element tables) and PROGRESS.md (status tables). `python tools/specgate.py check` is the quality gate.
+# status: TODO | IN_PROGRESS | DRAFT (authored, not yet reviewed) | COMPLETE (passed quality gate) | BLOCKED
+# kind:   research | doc | module | audit      pkg: package/area that owns the described module
+# spec:   path relative to docs/ of the element's deliverable (module specs live in 06-MODULES/)
+schema_version: 1
+phases:
+  - {id: "00", title: "Repository Discovery and Technical Research"}
+  - {id: "01", title: "Product Requirements and Threat Modeling"}
+  - {id: "02", title: "Temporal Authorization Model"}
+  - {id: "03", title: "Core System Architecture"}
+  - {id: "04", title: "Authentication and Identity Adapters"}
+  - {id: "05", title: "Probe and Offensive Test Engine"}
+  - {id: "06", title: "Revocation Orchestration"}
+  - {id: "07", title: "Attack Scenario Library"}
+  - {id: "08", title: "Evidence, Correlation, and Finding Analysis"}
+  - {id: "09", title: "Test Laboratory and Simulation Framework"}
+  - {id: "10", title: "CLI, GUI, and User Experience"}
+  - {id: "11", title: "Security and Operational Engineering"}
+  - {id: "12", title: "Testing, QA, and Verification"}
+  - {id: "13", title: "Build, Packaging, Distribution, and Documentation"}
+  - {id: "14", title: "Future Expansion and Product Strategy"}
+  - {id: "15", title: "Independent Specification Audit"}
+elements:
+# ---------------- PHASE 00 ----------------
+  - {id: RG-P00-001, title: "Repository discovery and existing-work assessment", kind: doc, pkg: docs, deps: [], spec: 02-RESEARCH/REPO-ASSESSMENT.md, status: TODO}
+  - {id: RG-P00-002, title: "Schemathesis integration research and adapter-boundary specification", kind: doc, pkg: stbridge, deps: [RG-P00-001], spec: 02-RESEARCH/SCHEMATHESIS-INTEGRATION.md, status: TODO}
+  - {id: RG-P00-003, title: "Standards inventory and expected-enforcement reference", kind: research, pkg: docs, deps: [RG-P00-001], spec: 02-RESEARCH/STANDARDS-REFERENCE.md, status: TODO}
+  - {id: RG-P00-004, title: "Competitive and prior-art analysis", kind: research, pkg: docs, deps: [RG-P00-001], spec: 02-RESEARCH/COMPETITIVE-ANALYSIS.md, status: TODO}
+  - {id: RG-P00-005, title: "Identity provider and library capability research (Keycloak, Entra, Okta, Auth0, Authlib)", kind: research, pkg: idp, deps: [RG-P00-001], spec: 02-RESEARCH/providers/README.md, status: TODO}
+  - {id: RG-P00-006, title: "Technical feasibility, stack evaluation, risk register, research register", kind: doc, pkg: docs, deps: [RG-P00-002, RG-P00-003, RG-P00-004, RG-P00-005], spec: 02-RESEARCH/TECHNICAL-FEASIBILITY.md, status: TODO}
+# ---------------- PHASE 01 ----------------
+  - {id: RG-P01-001, title: "Project charter", kind: doc, pkg: docs, deps: [RG-P00-006], spec: 00-PROJECT-CHARTER.md, status: TODO}
+  - {id: RG-P01-002, title: "Personas and user workflows", kind: doc, pkg: docs, deps: [RG-P01-001], spec: 03-PRODUCT/USER-WORKFLOWS.md, status: TODO}
+  - {id: RG-P01-003, title: "Threat model (target-side attack objectives and tool-side risks)", kind: doc, pkg: docs, deps: [RG-P01-001], spec: 03-PRODUCT/THREAT-MODEL.md, status: TODO}
+  - {id: RG-P01-004, title: "Product requirements, feature matrix and MVP scope", kind: doc, pkg: docs, deps: [RG-P01-002, RG-P01-003], spec: 03-PRODUCT/PRODUCT-REQUIREMENTS.md, status: TODO}
+# ---------------- PHASE 02 (rg_core: temporal model) ----------------
+  - {id: RG-P02-001, title: "Time and clock model", slug: time-and-clock-model, kind: module, pkg: core, deps: [RG-P01-004, RG-P03-001], status: TODO}
+  - {id: RG-P02-002, title: "Identity and permission state model", slug: identity-permission-state, kind: module, pkg: core, deps: [RG-P02-001], status: TODO}
+  - {id: RG-P02-003, title: "Credential, session and token lifecycle model", slug: credential-lifecycle, kind: module, pkg: core, deps: [RG-P02-002], status: TODO}
+  - {id: RG-P02-004, title: "Revocation event model and event ordering", slug: revocation-event-model, kind: module, pkg: core, deps: [RG-P02-003], status: TODO}
+  - {id: RG-P02-005, title: "Expected enforcement model", slug: expected-enforcement-model, kind: module, pkg: core, deps: [RG-P02-004], status: TODO}
+  - {id: RG-P02-006, title: "Observation and confidence model", slug: observation-confidence-model, kind: module, pkg: core, deps: [RG-P02-004], status: TODO}
+  - {id: RG-P02-007, title: "Experiment state machine and transitions", slug: experiment-state-machine, kind: module, pkg: core, deps: [RG-P02-005, RG-P02-006], status: TODO}
+  - {id: RG-P02-008, title: "Timeline representation", slug: timeline-representation, kind: module, pkg: core, deps: [RG-P02-006], status: TODO}
+  - {id: RG-P02-009, title: "Outcome classification rules", slug: outcome-classification, kind: module, pkg: core, deps: [RG-P02-005, RG-P02-006, RG-P02-007], status: TODO}
+# ---------------- PHASE 03 (architecture / platform) ----------------
+  - {id: RG-P03-001, title: "System architecture, package boundaries, shared contracts and ADRs", kind: doc, pkg: docs, deps: [RG-P01-004], spec: 04-ARCHITECTURE/SYSTEM-ARCHITECTURE.md, status: TODO}
+  - {id: RG-P03-002, title: "Shared schema and serialization framework", slug: schema-serialization, kind: module, pkg: core, deps: [RG-P03-001], status: TODO}
+  - {id: RG-P03-003, title: "Configuration subsystem", slug: configuration, kind: module, pkg: app, deps: [RG-P03-002], status: TODO}
+  - {id: RG-P03-004, title: "Logging, tracing and redaction", slug: logging-redaction, kind: module, pkg: core, deps: [RG-P03-002], status: TODO}
+  - {id: RG-P03-005, title: "Async model, error taxonomy and cancellation", slug: async-errors-cancellation, kind: module, pkg: core, deps: [RG-P03-002], status: TODO}
+  - {id: RG-P03-006, title: "Scheduler abstraction and clock injection", slug: scheduler, kind: module, pkg: core, deps: [RG-P02-001, RG-P03-005], status: TODO}
+  - {id: RG-P03-007, title: "Event bus", slug: event-bus, kind: module, pkg: core, deps: [RG-P03-005], status: TODO}
+  - {id: RG-P03-008, title: "Persistence layer and evidence store", slug: persistence-store, kind: module, pkg: app, deps: [RG-P03-002, RG-P02-006], status: TODO}
+  - {id: RG-P03-009, title: "Plugin architecture", slug: plugin-architecture, kind: module, pkg: core, deps: [RG-P03-002, RG-P03-005], status: TODO}
+  - {id: RG-P03-010, title: "Experiment orchestration engine and composition root", slug: experiment-engine, kind: module, pkg: app, deps: [RG-P02-007, RG-P03-003, RG-P03-006, RG-P03-007, RG-P03-008, RG-P03-009], status: TODO}
+  - {id: RG-P03-011, title: "Cross-platform deployment model", slug: cross-platform-deployment, kind: module, pkg: app, deps: [RG-P03-001], status: TODO}
+# ---------------- PHASE 04 (rg_idp) ----------------
+  - {id: RG-P04-001, title: "Identity adapter framework and capability model", slug: idp-adapter-framework, kind: module, pkg: idp, deps: [RG-P02-004, RG-P03-005, RG-P03-009], status: TODO}
+  - {id: RG-P04-002, title: "Generic OAuth/OIDC client (Authlib)", slug: oidc-client, kind: module, pkg: idp, deps: [RG-P04-001], status: TODO}
+  - {id: RG-P04-003, title: "Token handling and JWT analysis", slug: token-jwt-analysis, kind: module, pkg: idp, deps: [RG-P04-002, RG-P02-003], status: TODO}
+  - {id: RG-P04-004, title: "Introspection, revocation and logout endpoint clients", slug: introspection-revocation-logout, kind: module, pkg: idp, deps: [RG-P04-002], status: TODO}
+  - {id: RG-P04-005, title: "Session-cookie and application-session adapter", slug: session-cookie-adapter, kind: module, pkg: idp, deps: [RG-P04-001, RG-P02-003], status: TODO}
+  - {id: RG-P04-006, title: "Generic standards-based test-service adapter", slug: generic-provider-adapter, kind: module, pkg: idp, deps: [RG-P04-003, RG-P04-004], status: TODO}
+  - {id: RG-P04-007, title: "Keycloak adapter", slug: keycloak-adapter, kind: module, pkg: idp, deps: [RG-P04-006, RG-P00-005], status: TODO}
+  - {id: RG-P04-008, title: "Microsoft Entra ID adapter", slug: entra-adapter, kind: module, pkg: idp, deps: [RG-P04-006, RG-P00-005], status: TODO}
+  - {id: RG-P04-009, title: "Okta adapter", slug: okta-adapter, kind: module, pkg: idp, deps: [RG-P04-006, RG-P00-005], status: TODO}
+  - {id: RG-P04-010, title: "Auth0 adapter", slug: auth0-adapter, kind: module, pkg: idp, deps: [RG-P04-006, RG-P00-005], status: TODO}
+  - {id: RG-P04-011, title: "SSF/CAEP event ingestion and transmission", slug: ssf-caep, kind: module, pkg: idp, deps: [RG-P04-001, RG-P03-007], status: TODO}
+# ---------------- PHASE 05 (rg_probe + rg_stbridge) ----------------
+  - {id: RG-P05-001, title: "Probe model and configuration", slug: probe-model, kind: module, pkg: probe, deps: [RG-P02-006, RG-P03-002], status: TODO}
+  - {id: RG-P05-002, title: "Request templates and variable substitution", slug: request-templates, kind: module, pkg: probe, deps: [RG-P05-001], status: TODO}
+  - {id: RG-P05-003, title: "Credential and session injection", slug: credential-injection, kind: module, pkg: probe, deps: [RG-P05-002, RG-P02-003], status: TODO}
+  - {id: RG-P05-004, title: "Raw HTTP transport", slug: http-transport, kind: module, pkg: probe, deps: [RG-P05-003, RG-P02-001], status: TODO}
+  - {id: RG-P05-005, title: "Schemathesis bridge: operation catalog and probe derivation", slug: schemathesis-bridge, kind: module, pkg: stbridge, deps: [RG-P05-004, RG-P00-002], status: TODO}
+  - {id: RG-P05-006, title: "Response assertion engine", slug: response-assertions, kind: module, pkg: probe, deps: [RG-P05-001], status: TODO}
+  - {id: RG-P05-007, title: "Baseline and negative-control validation", slug: baseline-controls, kind: module, pkg: probe, deps: [RG-P05-006, RG-P05-004], status: TODO}
+  - {id: RG-P05-008, title: "Probe scheduling (post-revocation schedules)", slug: probe-scheduling, kind: module, pkg: probe, deps: [RG-P03-006, RG-P05-007, RG-P02-006], status: TODO}
+  - {id: RG-P05-009, title: "Rate limiting, retry and backoff", slug: rate-limit-retry, kind: module, pkg: probe, deps: [RG-P05-004, RG-P03-005], status: TODO}
+  - {id: RG-P05-010, title: "Result normalization", slug: result-normalization, kind: module, pkg: probe, deps: [RG-P05-006, RG-P05-004, RG-P02-006], status: TODO}
+  - {id: RG-P05-011, title: "WebSocket persistence probe", slug: websocket-probe, kind: module, pkg: probe, deps: [RG-P05-010, RG-P05-003], status: TODO}
+  - {id: RG-P05-012, title: "GraphQL probes", slug: graphql-probes, kind: module, pkg: stbridge, deps: [RG-P05-005, RG-P05-011], status: TODO}
+  - {id: RG-P05-013, title: "Replay and reproducibility", slug: replay-reproducibility, kind: module, pkg: probe, deps: [RG-P05-010, RG-P03-008], status: TODO}
+  - {id: RG-P05-014, title: "Probe concurrency, failure recovery and cancellation", slug: probe-concurrency, kind: module, pkg: probe, deps: [RG-P05-008, RG-P05-009, RG-P05-010], status: TODO}
+# ---------------- PHASE 06 (revocation orchestration) ----------------
+  - {id: RG-P06-001, title: "Revocation action framework", slug: revocation-action-framework, kind: module, pkg: core, deps: [RG-P04-001, RG-P02-004, RG-P03-005], status: TODO}
+  - {id: RG-P06-002, title: "Manual revocation acknowledgment", slug: manual-revocation, kind: module, pkg: app, deps: [RG-P06-001], status: TODO}
+  - {id: RG-P06-003, title: "Account and entitlement removal actions (disable, delete, role, group)", slug: account-entitlement-actions, kind: module, pkg: idp, deps: [RG-P06-001, RG-P04-006], status: TODO}
+  - {id: RG-P06-004, title: "Session termination and token revocation actions", slug: session-token-actions, kind: module, pkg: idp, deps: [RG-P06-001, RG-P04-004], status: TODO}
+  - {id: RG-P06-005, title: "Password and credential reset actions", slug: credential-reset-actions, kind: module, pkg: idp, deps: [RG-P06-001], status: TODO}
+  - {id: RG-P06-006, title: "Conditional Access and device compliance changes", slug: conditional-access-device, kind: module, pkg: idp, deps: [RG-P06-001, RG-P04-008], status: TODO}
+  - {id: RG-P06-007, title: "Service identity (workload) revocation", slug: service-identity-revocation, kind: module, pkg: idp, deps: [RG-P06-003], status: TODO}
+  - {id: RG-P06-008, title: "Event-driven and externally observed revocation", slug: event-driven-revocation, kind: module, pkg: idp, deps: [RG-P06-001, RG-P04-011], status: TODO}
+  - {id: RG-P06-009, title: "Revocation correlation and acknowledgment anchoring", slug: revocation-anchoring, kind: module, pkg: core, deps: [RG-P06-001, RG-P02-004, RG-P02-001], status: TODO}
+  - {id: RG-P06-010, title: "Restoration, cleanup and reactivation", slug: restoration-cleanup, kind: module, pkg: core, deps: [RG-P06-003, RG-P06-004], status: TODO}
+# ---------------- PHASE 07 (scenario library) ----------------
+  - {id: RG-P07-001, title: "Scenario definition schema (declarative DSL)", slug: scenario-dsl, kind: module, pkg: core, deps: [RG-P05-001, RG-P06-001, RG-P02-005], status: TODO}
+  - {id: RG-P07-002, title: "Scenario catalog A: credential and session lifecycle", slug: scenario-catalog-a, kind: module, pkg: core, deps: [RG-P07-001, RG-P06-004, RG-P06-003], status: TODO}
+  - {id: RG-P07-003, title: "Scenario catalog B: authorization propagation and cross-service enforcement", slug: scenario-catalog-b, kind: module, pkg: core, deps: [RG-P07-001, RG-P06-003, RG-P05-011], status: TODO}
+  - {id: RG-P07-004, title: "Scenario catalog C: events, ordering and reactivation", slug: scenario-catalog-c, kind: module, pkg: core, deps: [RG-P07-001, RG-P06-008, RG-P06-010], status: TODO}
+  - {id: RG-P07-005, title: "Automated temporal scenario generation", slug: scenario-generation, kind: module, pkg: stbridge, deps: [RG-P07-002, RG-P07-003, RG-P07-004, RG-P05-005], status: TODO}
+# ---------------- PHASE 08 (evidence & analysis) ----------------
+  - {id: RG-P08-001, title: "Evidence collection and bundle format", slug: evidence-collection, kind: module, pkg: core, deps: [RG-P03-008, RG-P05-010, RG-P06-009], status: TODO}
+  - {id: RG-P08-002, title: "Clock alignment and timestamp provenance", slug: clock-alignment, kind: module, pkg: core, deps: [RG-P02-001, RG-P08-001], status: TODO}
+  - {id: RG-P08-003, title: "Event correlation engine", slug: event-correlation, kind: module, pkg: core, deps: [RG-P08-002, RG-P06-009], status: TODO}
+  - {id: RG-P08-004, title: "Exposure window computation", slug: exposure-window, kind: module, pkg: core, deps: [RG-P08-003, RG-P02-006], status: TODO}
+  - {id: RG-P08-005, title: "Confidence scoring", slug: confidence-scoring, kind: module, pkg: core, deps: [RG-P08-004], status: TODO}
+  - {id: RG-P08-006, title: "Finding classification and false-positive reduction", slug: finding-classification, kind: module, pkg: core, deps: [RG-P08-005, RG-P02-009], status: TODO}
+  - {id: RG-P08-007, title: "Duplicate detection and reproducibility scoring", slug: dedup-reproducibility, kind: module, pkg: core, deps: [RG-P08-006, RG-P05-013], status: TODO}
+  - {id: RG-P08-008, title: "Provider enforcement baselines", slug: enforcement-baselines, kind: module, pkg: core, deps: [RG-P02-005, RG-P08-006], status: TODO}
+  - {id: RG-P08-009, title: "Historical comparison and regression analysis", slug: historical-regression, kind: module, pkg: app, deps: [RG-P08-007, RG-P03-008], status: TODO}
+  - {id: RG-P08-010, title: "Risk and impact scoring", slug: risk-impact-scoring, kind: module, pkg: core, deps: [RG-P08-006], status: TODO}
+  - {id: RG-P08-011, title: "Report data contracts and report generation", slug: reporting, kind: module, pkg: app, deps: [RG-P08-006, RG-P08-009, RG-P08-010, RG-P02-008], status: TODO}
+# ---------------- PHASE 09 (laboratory) ----------------
+  - {id: RG-P09-001, title: "Lab architecture and deterministic virtual-time simulation", slug: lab-architecture, kind: module, pkg: lab, deps: [RG-P03-006, RG-P02-007], status: TODO}
+  - {id: RG-P09-002, title: "Mock identity provider", slug: mock-idp, kind: module, pkg: lab, deps: [RG-P09-001, RG-P04-006], status: TODO}
+  - {id: RG-P09-003, title: "Mock protected services and enforcement profiles", slug: mock-services, kind: module, pkg: lab, deps: [RG-P09-002], status: TODO}
+  - {id: RG-P09-004, title: "Fault and clock injection", slug: fault-injection, kind: module, pkg: lab, deps: [RG-P09-003, RG-P02-001], status: TODO}
+  - {id: RG-P09-005, title: "Fixtures, expected datasets and fixture versioning", slug: fixtures-datasets, kind: module, pkg: lab, deps: [RG-P09-004, RG-P07-004], status: TODO}
+  - {id: RG-P09-006, title: "Keycloak integration laboratory", slug: keycloak-lab, kind: module, pkg: lab, deps: [RG-P04-007, RG-P09-003], status: TODO}
+# ---------------- PHASE 10 (UX) ----------------
+  - {id: RG-P10-001, title: "CLI command contract", slug: cli-contract, kind: module, pkg: app, deps: [RG-P03-010, RG-P08-011, RG-P07-001], status: TODO}
+  - {id: RG-P10-002, title: "Project workspace and configuration UX", slug: workspace-ux, kind: module, pkg: app, deps: [RG-P10-001, RG-P03-003], status: TODO}
+  - {id: RG-P10-003, title: "Experiment run UX: dry run and live timeline", slug: run-ux, kind: module, pkg: app, deps: [RG-P10-002, RG-P08-011], status: TODO}
+  - {id: RG-P10-004, title: "Local GUI architecture and internal web API", slug: gui-architecture, kind: module, pkg: app, deps: [RG-P10-001, RG-P03-007], status: TODO}
+  - {id: RG-P10-005, title: "GUI screens and interactions", slug: gui-screens, kind: module, pkg: app, deps: [RG-P10-004, RG-P10-003], status: TODO}
+  - {id: RG-P10-006, title: "Findings review, comparison and export UX", slug: findings-ux, kind: module, pkg: app, deps: [RG-P10-005, RG-P08-009], status: TODO}
+  - {id: RG-P10-007, title: "Automation API", slug: automation-api, kind: module, pkg: app, deps: [RG-P10-004], status: TODO}
+# ---------------- PHASE 11 (security & ops) ----------------
+  - {id: RG-P11-001, title: "Secret storage, credential lifecycle and redaction", slug: secrets-redaction, kind: module, pkg: app, deps: [RG-P03-004, RG-P03-008], status: TODO}
+  - {id: RG-P11-002, title: "Scope enforcement and authorization controls", slug: scope-enforcement, kind: module, pkg: app, deps: [RG-P03-003, RG-P06-001], status: TODO}
+  - {id: RG-P11-003, title: "Encrypted evidence storage", slug: evidence-encryption, kind: module, pkg: app, deps: [RG-P11-001, RG-P08-001], status: TODO}
+  - {id: RG-P11-004, title: "Plugin trust boundaries", slug: plugin-trust, kind: module, pkg: core, deps: [RG-P03-009, RG-P11-002], status: TODO}
+  - {id: RG-P11-005, title: "Interrupted-run recovery", slug: run-recovery, kind: module, pkg: app, deps: [RG-P03-010, RG-P06-010], status: TODO}
+  - {id: RG-P11-006, title: "Diagnostics, updates, migrations and offline operation", slug: diagnostics-migrations, kind: module, pkg: app, deps: [RG-P03-008, RG-P03-011], status: TODO}
+  - {id: RG-P11-007, title: "Dependency and supply-chain security", slug: supply-chain, kind: module, pkg: app, deps: [RG-P03-011], status: TODO}
+# ---------------- PHASE 12 (testing) ----------------
+  - {id: RG-P12-001, title: "Test strategy, coverage thresholds and quality gates", kind: doc, pkg: docs, deps: [RG-P09-005, RG-P08-011], spec: 07-TESTING/TEST-STRATEGY.md, status: TODO}
+  - {id: RG-P12-002, title: "Property-based and state-machine model tests", kind: doc, pkg: docs, deps: [RG-P12-001], spec: 07-TESTING/MODEL-TESTS.md, status: TODO}
+  - {id: RG-P12-003, title: "Provider adapter contract tests", kind: doc, pkg: docs, deps: [RG-P12-001, RG-P09-006, RG-P04-010], spec: 07-TESTING/ADAPTER-CONTRACT-TESTS.md, status: TODO}
+  - {id: RG-P12-004, title: "Performance benchmark plan", kind: doc, pkg: docs, deps: [RG-P12-001, RG-P05-014], spec: 07-TESTING/PERFORMANCE-PLAN.md, status: TODO}
+  - {id: RG-P12-005, title: "Cross-platform, CLI, GUI and packaging tests", kind: doc, pkg: docs, deps: [RG-P12-001, RG-P10-006], spec: 07-TESTING/PLATFORM-UI-TESTS.md, status: TODO}
+  - {id: RG-P12-006, title: "Security tests and Schemathesis isolation/compatibility suite", kind: doc, pkg: docs, deps: [RG-P12-001, RG-P11-007, RG-P05-012], spec: 07-TESTING/SECURITY-AND-UPSTREAM-TESTS.md, status: TODO}
+# ---------------- PHASE 13 (build/release/docs) ----------------
+  - {id: RG-P13-001, title: "Development environment and build system", kind: doc, pkg: docs, deps: [RG-P03-011, RG-P12-001], spec: 09-RELEASE/BUILD-SYSTEM.md, status: TODO}
+  - {id: RG-P13-002, title: "CI/CD workflows, quality gates and release automation", kind: doc, pkg: docs, deps: [RG-P13-001, RG-P12-006], spec: 09-RELEASE/CI-CD.md, status: TODO}
+  - {id: RG-P13-003, title: "Packaging, distribution and release checklist", kind: doc, pkg: docs, deps: [RG-P13-002, RG-P12-005], spec: 09-RELEASE/PACKAGING-RELEASE.md, status: TODO}
+  - {id: RG-P13-004, title: "User and developer documentation plan", kind: doc, pkg: docs, deps: [RG-P13-003, RG-P10-006], spec: 09-RELEASE/DOCUMENTATION-PLAN.md, status: TODO}
+# ---------------- PHASE 14 / 15 ----------------
+  - {id: RG-P14-001, title: "Future expansion and product strategy", kind: doc, pkg: docs, deps: [RG-P13-004], spec: 10-OPERATIONS/FUTURE-ROADMAP.md, status: TODO}
+  - {id: RG-P15-001, title: "Independent specification audit (round 1)", kind: audit, pkg: docs, deps: [RG-P14-001], spec: SPECIFICATION-AUDIT.md, status: TODO}
+  - {id: RG-P15-002, title: "Audit remediation and re-audit", kind: audit, pkg: docs, deps: [RG-P15-001], spec: SPECIFICATION-AUDIT.md, status: TODO}
