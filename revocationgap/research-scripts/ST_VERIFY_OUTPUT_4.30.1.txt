@@ -1,0 +1,21 @@
+### st_verify_1_basics.py
+schemathesis 4.30.1
+ops: [('get', '/docs/{id}', 'GET /docs/{id}')]
+curl: curl -X GET -H 'Authorization: [Filtered]' http://127.0.0.1:49193/docs/7
+status 200 elapsed 0.003078 hdr keys ['content-length', 'content-type', 'date', 'server'] json {'doc': 'secret-42'}
+status 401
+stamps 4 ['before', 'after', 'before', 'after']
+response has timestamp attrs? []
+custom check ok
+registered-auth call() status (does call() apply auth providers?): 401
+### st_verify_2_concurrency.py
+400 calls over 8 threads: 3.29s => 122 req/s
+Case() overhead us: 11.219665999988138
+kwargs ok 200 request headers sent: Bearer x aQIbna
+### st_verify_3_graphql_cookies.py
+graphql ops ['Query.me']
+['Case', 'add_parameter', 'app', 'as_strategy', 'base_url', 'body', 'cookies', 'definition', 'filter_case_tracker', 'full_path', 'get_bodies_for_media_type', 'get_parameter', 'get_parameter_serializer', 'get_parameter_serializers', 'get_parameter_set', 'get_request_payload_content_types', 'get_strategies_from_examples', 'has_skipped_required_body', 'headers', 'is_valid_response', 'iter_parameters', 'label', 'method', 'operation_reference', 'path', 'path_parameters', 'prepare_multipart', 'query', 'responses', 'schema', 'security', 'skipped_parameters', 'tags', 'validate_response']
+gql call 200 b'{"query": "{\\n  me {\\n    id\\n  }\\n}"}' schemathesis/4.30.1
+cookie sent on 2nd call via shared session: True
+no session -> cookie: None
+Connection hdr: keep-alive UA: schemathesis/4.30.1

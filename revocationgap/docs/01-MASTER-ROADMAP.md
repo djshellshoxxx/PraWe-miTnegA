@@ -88,8 +88,8 @@ Status legend: TODO · IN_PROGRESS · DRAFT (authored, awaiting review) · COMPL
 
 | ID | Element | Pkg | Kind | Depends on | Spec | Order | Status |
 |---|---|---|---|---|---|---|---|
-| RG-P00-001 | Repository discovery and existing-work assessment | docs | doc | — | `02-RESEARCH/REPO-ASSESSMENT.md` | 1 | TODO |
-| RG-P00-002 | Schemathesis integration research and adapter-boundary specification | stbridge | doc | P00-001 | `02-RESEARCH/SCHEMATHESIS-INTEGRATION.md` | 2 | TODO |
+| RG-P00-001 | Repository discovery and existing-work assessment | docs | doc | — | `02-RESEARCH/REPO-ASSESSMENT.md` | 1 | COMPLETE |
+| RG-P00-002 | Schemathesis integration research and adapter-boundary specification | stbridge | doc | P00-001 | `02-RESEARCH/SCHEMATHESIS-INTEGRATION.md` | 2 | COMPLETE |
 | RG-P00-003 | Standards inventory and expected-enforcement reference | docs | research | P00-001 | `02-RESEARCH/STANDARDS-REFERENCE.md` | 3 | TODO |
 | RG-P00-004 | Competitive and prior-art analysis | docs | research | P00-001 | `02-RESEARCH/COMPETITIVE-ANALYSIS.md` | 4 | TODO |
 | RG-P00-005 | Identity provider and library capability research (Keycloak, Entra, Okta, Auth0, Authlib) | idp | research | P00-001 | `02-RESEARCH/providers/README.md` | 5 | TODO |

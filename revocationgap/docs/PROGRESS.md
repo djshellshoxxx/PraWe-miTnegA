@@ -12,8 +12,8 @@ _Persistent project memory. Update on every commit. A resumed session must first
 
 | Field | Value |
 |---|---|
-| Current phase | 00 → 03 (foundation) |
-| Current work element | RG-P00-001 / RG-P00-002 / RG-P03-001 (coordinator) |
+| Current phase | 00 research integration (W1) |
+| Current work element | Awaiting research agents: RG-P00-003 (standards, 2nd pass), P00-004, P00-005 |
 | Branch | `claude/revocationgap-spec` |
 | Most recent verified commit | _(none yet)_ |
 | Push status | not yet attempted |
@@ -28,15 +28,15 @@ Write `02-RESEARCH/REPO-ASSESSMENT.md`, `02-RESEARCH/SCHEMATHESIS-INTEGRATION.md
 <!-- BEGIN:STATUS -->
 | Status | Count |
 |---|---|
-| TODO | 114 |
+| TODO | 112 |
 | IN_PROGRESS | 0 |
 | DRAFT | 0 |
-| COMPLETE | 0 |
+| COMPLETE | 2 |
 | BLOCKED | 0 |
 
 | Phase | Complete / Total |
 |---|---|
-| 00 Repository Discovery and Technical Research | 0 / 6 |
+| 00 Repository Discovery and Technical Research | 2 / 6 |
 | 01 Product Requirements and Threat Modeling | 0 / 4 |
 | 02 Temporal Authorization Model | 0 / 9 |
 | 03 Core System Architecture | 0 / 11 |
@@ -53,7 +53,7 @@ Write `02-RESEARCH/REPO-ASSESSMENT.md`, `02-RESEARCH/SCHEMATHESIS-INTEGRATION.md
 | 14 Future Expansion and Product Strategy | 0 / 1 |
 | 15 Independent Specification Audit | 0 / 2 |
 
-Next 8 eligible elements in dependency order: RG-P00-001, RG-P00-002, RG-P00-003, RG-P00-004, RG-P00-005, RG-P00-006, RG-P01-001, RG-P01-002
+Next 8 eligible elements in dependency order: RG-P00-003, RG-P00-004, RG-P00-005, RG-P00-006, RG-P01-001, RG-P01-002, RG-P01-003, RG-P01-004
 <!-- END:STATUS -->
 
 ## Architectural decisions

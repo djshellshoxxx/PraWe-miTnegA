@@ -24,8 +24,8 @@ phases:
   - {id: "15", title: "Independent Specification Audit"}
 elements:
 # ---------------- PHASE 00 ----------------
-  - {id: RG-P00-001, title: "Repository discovery and existing-work assessment", kind: doc, pkg: docs, deps: [], spec: 02-RESEARCH/REPO-ASSESSMENT.md, status: TODO}
-  - {id: RG-P00-002, title: "Schemathesis integration research and adapter-boundary specification", kind: doc, pkg: stbridge, deps: [RG-P00-001], spec: 02-RESEARCH/SCHEMATHESIS-INTEGRATION.md, status: TODO}
+  - {id: RG-P00-001, title: "Repository discovery and existing-work assessment", kind: doc, pkg: docs, deps: [], spec: 02-RESEARCH/REPO-ASSESSMENT.md, status: COMPLETE}
+  - {id: RG-P00-002, title: "Schemathesis integration research and adapter-boundary specification", kind: doc, pkg: stbridge, deps: [RG-P00-001], spec: 02-RESEARCH/SCHEMATHESIS-INTEGRATION.md, status: COMPLETE}
   - {id: RG-P00-003, title: "Standards inventory and expected-enforcement reference", kind: research, pkg: docs, deps: [RG-P00-001], spec: 02-RESEARCH/STANDARDS-REFERENCE.md, status: TODO}
   - {id: RG-P00-004, title: "Competitive and prior-art analysis", kind: research, pkg: docs, deps: [RG-P00-001], spec: 02-RESEARCH/COMPETITIVE-ANALYSIS.md, status: TODO}
   - {id: RG-P00-005, title: "Identity provider and library capability research (Keycloak, Entra, Okta, Auth0, Authlib)", kind: research, pkg: idp, deps: [RG-P00-001], spec: 02-RESEARCH/providers/README.md, status: TODO}
