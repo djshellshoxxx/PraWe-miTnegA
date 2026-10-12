@@ -38,8 +38,16 @@ def run_campaign(config: CampaignConfig) -> dict[str, Any]:
         raise ValueError("max_cases must be an integer limit between 1 and 10000")
     if type(config.revocation_at) not in (int, float) or not math.isfinite(config.revocation_at) or config.revocation_at < 0:
         raise ValueError("revocation_at must be finite and non-negative")
+    if type(config.cached_authorization) is not bool:
+        raise ValueError("cached_authorization must be bool")
+    if config.expiry_at is not None:
+        if type(config.expiry_at) not in (int, float) or not math.isfinite(config.expiry_at) or config.expiry_at <= 0:
+            raise ValueError("expiry_at must be positive and finite")
     candidates: set[float] = set()
-    for offset in config.offsets:
+    # Duplicate-heavy and infinite iterables must consume a finite budget.
+    for index, offset in enumerate(config.offsets):
+        if index >= config.max_cases * 10:
+            raise ValueError("campaign mutation input limit exceeded")
         if type(offset) not in (float, int) or not math.isfinite(offset):
             raise ValueError("offset must be a finite number")
         execution = config.revocation_at + offset

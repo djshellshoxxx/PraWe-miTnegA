@@ -43,3 +43,19 @@ def test_campaign_zero_and_negative_candidate_handling():
     record = run_campaign(CampaignConfig(revocation_at=0, offsets=(-1, 0, 1), cached_authorization=True))
     assert [case["scenario"]["execution_at"] for case in record["cases"]] == [0.0, 1.0]
     assert record["summary"] == {"cases": 2, "violations": 2}
+
+
+def test_campaign_limits_raw_mutation_inputs_even_if_all_duplicate():
+    from itertools import repeat
+    with pytest.raises(ValueError, match="input limit"):
+        run_campaign(CampaignConfig(revocation_at=3, offsets=repeat(0), max_cases=5))
+
+
+def test_campaign_rejects_invalid_expiry_with_no_cases():
+    with pytest.raises(ValueError):
+        run_campaign(CampaignConfig(revocation_at=3, offsets=(), expiry_at=math.inf))
+
+
+def test_campaign_rejects_boolean_revocation_time():
+    with pytest.raises(ValueError):
+        run_campaign(CampaignConfig(revocation_at=True, offsets=(0,)))
