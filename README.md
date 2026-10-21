@@ -46,3 +46,16 @@ Install with `python -m pip install -e '.[dev]'`, run `python -m pytest`, and ex
 Use modular interfaces, secure synthetic test environments, observable outcomes, reproducible seeds, explicit limits on virtualized dependencies, and redaction of captured secrets. Time advancement does **not** accelerate external model inference or remote APIs automatically.
 
 License selection is pending. Review all upstream licenses before vendoring or redistribution.
+
+## Build and test (verified on this snapshot)
+
+```sh
+python -m pip install -e '.[dev]'
+python -m pytest
+```
+
+`pytest` ran 73 tests, all passing, on Linux with Python 3.13 in a clean virtual environment.
+
+## Wiki
+
+Wiki source pages are in [docs/wiki/](docs/wiki/Home.md): a developer guide, an architecture summary (from `docs/FOUNDATION.md`) and a codebase map.
